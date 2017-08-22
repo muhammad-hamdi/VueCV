@@ -1,0 +1,258 @@
+.first-section {
+    background-color: #61DAFB;
+}
+h1 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 50px;
+}
+img.personal {
+    max-height: 200px;
+    border-radius: 50%;
+    border: 1px solid #ebb;
+    padding: 3px;
+    display: block;
+    margin: 10px auto;
+    box-shadow: 3px 3px 10px #ddd;
+}
+p, h1, h2 {
+    text-align: center;
+}
+h2 {
+    position: relative;
+    text-transform: uppercase;
+}
+h2:after {
+    content: "";
+    width: 100px;
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-bottom: 5px dotted #bbb
+}
+@media screen and (min-width : 992px) {
+    .bio {
+        font-size: 16px;
+        margin: 20px;
+        line-height: 1.5
+    }
+}
+ul {
+    list-style: none;
+    padding-top: 10px;
+    padding-left: 0;
+    float: left;
+    position: fixed;
+    left: -150px;
+    width: 200px;
+    z-index: 950;
+    background-color: #fff;
+    font-size: 18px;
+    height: 100%;
+    box-shadow: 2px 1px 10px 1px #ddd;
+    transition: all .2s ease-in-out;
+}
+ul:hover {
+    left: 0;
+}
+ul li {
+    padding: 15px;
+    margin: 5px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: color .2s ease-in;
+}
+ul a li {
+    color: #222;
+    transition: color .2s ease-in;
+}
+ul li i {
+    float: right;
+}
+ul li:before {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background-color: #8F80ED;
+    position: absolute;
+    top: 0px;
+    right: 200px;
+    z-index: 1000;
+    transition: all .2s ease-in;
+}
+ul li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background-color: #8F80ED;
+    position: absolute;
+    bottom: 0px;
+    left: 200px;
+    z-index: 1000;
+    transition: all .2s ease-in;
+}
+ul li:hover a, ul li:hover {
+    color: #8F80ED;
+}
+ul li:hover:before {
+    right: 0;
+}
+ul li:hover:after {
+    left: 0;
+}
+.info {
+    font-family: Helvetica;
+}
+.infosec {
+    margin-top: 50px;
+}
+body {
+    background-color: #F6F7F9;
+}
+#biography {
+    overflow: hidden;
+}
+.canvas {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+.skill {
+    width: 100%;
+    height: 110px;
+    position: relative;
+    margin: 20px 0;
+    transform-style: preserve-3d;
+    transition: all .2s ease-in-out;
+}
+.skill > div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    margin: 20px 0;
+    padding: 5px;
+    box-shadow: 0px 0px 20px 2px rgba(0,0,0,.08);
+    transition: all .5s ease-in-out;
+}
+.skill:hover {
+    transform: rotateY(180deg);
+}
+.skill-card {
+    z-index: 2;
+    backface-visibility: hidden;
+}
+.skill-card img {
+    margin: 10px auto;
+    display: block;
+    width: 35px;
+    height: 35px;
+}
+.skill-card p {
+    font-size: 18px;
+    margin: 20px auto;
+    transition: all .2s ease-in-out;
+}
+.skill-back {
+    z-index: 1;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+}
+.skill-back p {
+    font-size: 18px;
+    margin: 20px auto;
+}
+.skill-back .bar {
+    width: 90%;
+    height: 20px;
+    border-radius: 4px;
+    background-color: #ddd;
+    margin: auto;
+}
+.skill-back .bar .progress {
+    background-color: #4480ED;
+    text-align: center;
+}
+.skill-back .bar .progress span {
+    color: #fff;
+}
+.project {
+    width: 100%;
+    height: 400px;
+    background-color: #fff;
+    margin: 20px 0;
+    box-shadow: 0px 0px 20px 2px rgba(0,0,0,.08);
+    padding: 5px;
+    border-radius: 5px;
+}
+.project-img {
+    width: 100%;
+    height: 75%;
+    margin: auto;
+    margin-bottom: 0;
+    border: 1px solid #eee;
+    overflow: hidden;
+    cursor: pointer;
+}
+.project-img img {
+    width: 100%;
+    height: 100%;
+    transition: all .5s ease-in-out;
+    position: relative;
+}
+.project-img img:hover {
+    transform: scale(1.1);
+}
+.project-info {
+    width: 100%;
+    height: 25%;
+    display: block;
+}
+.project-info h3 {
+    margin-bottom: 5px;
+}
+.project-info p {
+    float: left;
+    text-align: left;
+    font-size: 16px;
+}
+.project-info a {
+    color: #000;
+    transition: all .2s ease-in-out;
+}
+.project-info a:hover {
+    color: #8F80ED;
+}
+.g-title {
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
+}
+.progress {
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 5px;
+}
+.progress .progress-bar {
+    background-color: #8F80ED;
+}
+.goal {
+    margin: 20px auto;
+}
+#contact {
+    background-color: #fff;
+}
+.split {
+    margin-top: 150px;
+    margin-bottom: 150px;
+}
+.split-small {
+    margin: 50px 0;
+}
