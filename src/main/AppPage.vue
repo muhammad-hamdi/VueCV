@@ -3,12 +3,12 @@
     <div class="row">
             <div class="hidden-xs hidden-sm">
                 <!-- Start Navbar -->
-                <ul>
-                    <a href="#biography"><li>Biography<i class=" fa fa-home"></i></li></a>
-                    <a href="#skills"><li>Skills<i class=" fa fa-code"></i></li></a>
-                    <a href="#portfolio"><li>Portfolio<i class=" fa fa-picture-o"></i></li></a>
-                    <a href="#goals"><li>Goals<i class=" fa fa-rocket"></i></li></a>
-                    <a href="#contact"><li>Contact<i class="fa fa-send"></i></li></a>
+                <ul class="sidebar-component">
+                    <a href="#" v-scroll-to="'#biography'"><li>Biography<i class=" fa fa-home"></i></li></a>
+                    <a href="#" v-scroll-to="'#skills'"><li>Skills<i class=" fa fa-code"></i></li></a>
+                    <a href="#" v-scroll-to="'#portfolio'"><li>Portfolio<i class=" fa fa-picture-o"></i></li></a>
+                    <a href="#" v-scroll-to="'#goals'"><li>Goals<i class=" fa fa-rocket"></i></li></a>
+                    <a href="#" v-scroll-to="'#contact'"><li>Contact<i class="fa fa-send"></i></li></a>
                 </ul>
                 <!-- End Navbar -->
             </div>
@@ -562,13 +562,13 @@
                   <div class="container">
                       <h2>Contact</h2>
                       <div class="split-small"></div>
-                      <div class="col-xs-12">
+                      <div class="col-xs-12 col-md-8">
                           <!-- Contact form -->
-                            <form method="POST">
+                            <form action="/" method="POST">
                                 <div class="md-form">
                                     <i class="fa fa-user prefix grey-text"></i>
                                     <input type="text" id="form3" class="form-control" name="name">
-                                    <label for="form3">Your name</label>
+                                    <label for="form3" class="">Your name</label>
                                 </div>
 
                                 <div class="md-form">
@@ -590,13 +590,27 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <button class="btn btn-primary">Send <i class="fa fa-paper-plane-o ml-1"></i></button>
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Send <i class="fa fa-paper-plane-o ml-1"></i></button>
                                 </div>
 
                             </form>
                             <!-- Contact form -->
                       </div>
+                      <div class="col-xs-12 col-md-4">
+                        <h3>Contact Info :-</h3>
+                        <p>Phone: +20 102 4504 394</p>
+                        <p>E-mail: prime.energy7@gmail.com</p>
+                        <p>Address: Royal Tower, Sidi Bishr, Alexandria</p>
+                        <ul id="social">
+                            <a href="https://www.fb.com/neutrino3"><li><i class="fa fa-facebook fa-2x"></i></li></a>
+                            <a href="https://codepen.io/neutricode/"><li><i class="fa fa-codepen fa-2x"></i></li></a>
+                            <a href="https://github.com/MuhammadHamdi1"><li><i class="fa fa-github fa-2x"></i></li></a>
+                        </ul>
+                      </div>
                   </div>
+              </div>
+              <div class="rights">
+                <h3>Copyright (c) 2017 Muhammad Hamdi All Rights Reserved.</h3>
               </div>
           </div>
   </div>
@@ -607,8 +621,11 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      
     }
+  },
+  created(){
+      window.document.title = 'Muhammad Hamdi';
   }
 }
 </script>
@@ -624,5 +641,8 @@ ul li {
 }
 ul li i {
   float: right;
+}
+#skills {
+    transform: translateY(120px);
 }
 </style>

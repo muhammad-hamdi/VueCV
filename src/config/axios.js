@@ -1,9 +1,9 @@
 import axios from 'axios'
 import config from './config'
 
-var api = axios.create({
-	baseURL: config.url,
-	headers: {'Authorization': localStorage.getItem('token')}
+export const api = axios.create({
+    baseURL: `${config.url}/api`,
+    headers: {
+        'x-access-token': localStorage.token
+    }
 });
-
-window.api = api;

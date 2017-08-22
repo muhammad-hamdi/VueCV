@@ -39,7 +39,7 @@ h2:after {
         line-height: 1.5
     }
 }
-ul {
+.sidebar-component {
     list-style: none;
     padding-top: 10px;
     padding-left: 0;
@@ -54,10 +54,10 @@ ul {
     box-shadow: 2px 1px 10px 1px #ddd;
     transition: all .2s ease-in-out;
 }
-ul:hover {
+.sidebar-component:hover {
     left: 0;
 }
-ul li {
+.sidebar-component li {
     padding: 15px;
     margin: 5px;
     cursor: pointer;
@@ -65,14 +65,14 @@ ul li {
     position: relative;
     transition: color .2s ease-in;
 }
-ul a li {
+.sidebar-component a li {
     color: #222;
     transition: color .2s ease-in;
 }
-ul li i {
+.sidebar-component li i {
     float: right;
 }
-ul li:before {
+.sidebar-component li:before {
     content: '';
     width: 100%;
     height: 2px;
@@ -83,7 +83,7 @@ ul li:before {
     z-index: 1000;
     transition: all .2s ease-in;
 }
-ul li:after {
+.sidebar-component li:after {
     content: '';
     width: 100%;
     height: 2px;
@@ -94,13 +94,13 @@ ul li:after {
     z-index: 1000;
     transition: all .2s ease-in;
 }
-ul li:hover a, ul li:hover {
+.sidebar-component li:hover a, ul li:hover {
     color: #8F80ED;
 }
-ul li:hover:before {
+.sidebar-component li:hover:before {
     right: 0;
 }
-ul li:hover:after {
+.sidebar-component li:hover:after {
     left: 0;
 }
 .info {
@@ -248,6 +248,57 @@ body {
 }
 #contact {
     background-color: #fff;
+    padding: 20px;
+}
+#contact h3 {
+    font-size: 26px;
+}
+#contact p {
+    text-align: left;
+    font-size: 18px;
+    margin: 20px 0;
+}
+#social {
+    position: relative;
+    width: 100%;
+    left:0;
+    box-shadow: none;
+    background: transparent;
+    margin: auto;
+}
+#social li:before {
+    content: '';
+    width: 0;
+    height: 0;
+    background-color: none;
+    position: none;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    transition: none;
+}
+#social li:after {
+    content: '';
+    width: 0;
+    height: 0;
+    background-color: none;
+    position: none;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    transition: none;
+}
+#social a {
+    float: left;
+    margin: 15px;
+    color: #000;
+}
+#social li i {
+    float: left;
+}
+.rights {
+    background-color: #F6F7F9;
+    text-align: center;
 }
 .split {
     margin-top: 150px;

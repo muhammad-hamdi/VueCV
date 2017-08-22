@@ -2,29 +2,33 @@
 	<!-- Login form -->
 	<div class="row">
 		<div class="col-md-4 col-xs-12 col-md-offset-4">
-			<form>
-    <p class="h3 text-center mb-4">Sign in</p>
+				<form>
+					<p class="h3 text-center mb-4">Sign in</p>
 
-    <div class="md-form">
-        <i class="fa fa-envelope prefix grey-text"></i>
-        <input type="text" placeholder="Your Email" v-model="email" class="form-control">
-    </div>
+					<div class="md-form">
+						<i class="fa fa-envelope prefix grey-text"></i>
+						<input type="text" id="defaultForm-email" v-model="email" class="form-control">
+						 <label for="defaultForm-email">Your email</label>
+					</div>
 
-    <div class="md-form">
-        <i class="fa fa-lock prefix grey-text"></i>
-        <input type="password" placeholder="Your Password" v-model="password" class="form-control">
-    </div>
+					<div class="md-form">
+						<i class="fa fa-lock prefix grey-text"></i>
+						<input type="password" id="defaultForm-password" v-model="password" class="form-control">
+						<label for="defaultForm-password">Your Password</label>
+					</div>
 
-    <div class="text-center">
-        <button class="btn btn-default" @click.prevent='login'>Login</button>
-    </div>
-</form>
+					<div class="text-center">
+						<button class="btn btn-default" @click.prevent='login'>Login</button>
+					</div>
+				</form>
 		</div>
 	</div>
 <!-- Login form -->
 </template>
 
 <script>
+	import {api} from '../config/axios'
+
 	export default {
 		data(){
 			return {
@@ -32,15 +36,25 @@
 				password: ''
 			}
 		},
+		created(){
+			window.document.title = 'Login | Admin';
+			var token = localStorage.getItem('token')
+		    if(token) {
+			  this.$router.push('/admin');
+			}
+		},
 		methods: {
 				login(){
-					window.api.post('login', {
+					api.post('login', {
 						email: this.email,
 						password: this.password
 					})
 						.then((res) => {
-							localStorage.setItem('token', res.token);
+							localStorage.setItem('token', res.data.token);
 							this.$router.push('/admin');
+						})
+						.catch((err) => {
+							throw err;
 						});
 				}
 			}
