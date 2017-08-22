@@ -119,6 +119,9 @@
                     age: this.age,
                     image: this.image_url,
                 };
+                if(this.newPwd = ''){
+                    delete reqBody.password;
+                };
                 if(this.pwd != this.user.password){
                     this.wrongPwd = true;
                 } else if (this.newPwd != this.authNewPwd) {

@@ -28,7 +28,7 @@
 
 <script>
 	import {api} from '../config/axios'
-
+	var jwtDecode = require('jwt-decode');
 	export default {
 		data(){
 			return {
@@ -50,7 +50,9 @@
 						password: this.password
 					})
 						.then((res) => {
-							localStorage.setItem('token', res.data.token);
+							var token = res.data.token,
+								decoded = token;
+							localStorage.setItem('token', decoded);
 							this.$router.push('/admin');
 						})
 						.catch((err) => {

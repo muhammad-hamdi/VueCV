@@ -7,7 +7,7 @@
 		</div>
 		<div class="row">
 		<div class="col-md-8 col-sm-12 col-md-offset-2">
-			<div class="panel panel-primary" v-for="user in users">
+			<div class="panel panel-primary">
 				<div class="panel-heading"><button class="btn btn-danger logout" @click="logOut">Log Out</button><h3>Welcome Back!</h3></div>
 				<div class="panel-body text-center">
 					<img :src="user.image">
@@ -31,7 +31,7 @@
 	export default {
 		data(){
 			return {
-				users: []
+				user: []
 			}
 		},
 		created(){
@@ -41,9 +41,9 @@
 		      this.$router.push('/admin/login');
 			}
 			window.document.title = 'Dashboard | Admin'
-            api.get('users')
+            api.get('me')
                 .then((res) => {
-                    this .users = res.data
+                    this.user = res.data
                 });
 		  },
 		  components: {
