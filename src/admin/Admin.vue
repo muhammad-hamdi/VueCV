@@ -52,6 +52,7 @@
 		  methods: {
 			  logOut(){
 				  localStorage.removeItem('token');
+				  localStorage.removeItem('id');
 				  this.$router.push('/admin/login');
 			  }
 		  }

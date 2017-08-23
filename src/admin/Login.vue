@@ -51,8 +51,9 @@
 					})
 						.then((res) => {
 							var token = res.data.token,
-								decoded = token;
-							localStorage.setItem('token', decoded);
+								id = res.data.user.id;
+							localStorage.setItem('token', token);
+							localStorage.setItem('id', id);
 							this.$router.push('/admin');
 						})
 						.catch((err) => {
