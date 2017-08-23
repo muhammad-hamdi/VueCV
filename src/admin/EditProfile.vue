@@ -1,5 +1,29 @@
 <template>
 <div>
+        <div class="modal-wrapper" v-if="edit">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-xs-12 col-md-offset-3">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading text-center"><h3>Verify Your Password</h3></div>
+                            <div class="panel-body">
+                                <div class="md-form">
+                                    <input type="password" id="defaultForm-password" v-model="pwd" class="form-control">
+                                    <label for="defaultForm-password">Password</label>
+                                </div>
+                                <div class="alert alert-danger" v-if="wrongPwd">
+                                    <strong>Wrong</strong> Password!
+                                </div>
+                                <div class="text-right">
+                                    <button class="btn btn-default" @click.prevent="authUserEdit">Edit</button>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                            
+        </div>
     <div class="row">
         <div class="col-sm-12">
             <nav-bar></nav-bar>
@@ -42,24 +66,7 @@
                             <textarea id="defaultForm-description" v-model="description" class="md-textarea"></textarea>
                             <label for="defaultForm-description">Your Description</label>
                         </div>
-
-                        <div class="md-form">
-                            <input type="password" id="defaultForm-password" v-model="pwd" class="form-control">
-                            <label for="defaultForm-password">Old Password</label>
-                        </div>
-                            <span v-if="wrongPwd">Wrong Password</span>
-                            <span v-if="noAsign">if you won't specify new password then write the old one in the three pwd inputs</span>
-                        <div class="md-form">
-                            <input type="password" id="defaultForm-n-password" v-model="newPwd" class="form-control">
-                            <label for="defaultForm-n-password">New Password</label>
-                        </div>
-
-                        <div class="md-form">
-                            <input type="password" id="defaultForm-c-n-password" v-model="authNewPwd" class="form-control">
-                            <label for="defaultForm-c-n-password">Confirm New Password</label>
-                        </div>
-                        <span v-if="noPwdMatch">Passwords Don't Match</span>
-                        <div class="text-left">
+                        <div class="text-right">
                             <button class="btn btn-primary" @click.prevent='editUser'>Edit</button>
                         </div>
                     </form>
@@ -88,13 +95,12 @@
                 age: '',
                 description: '',
                 wrongPwd: false,
-                noPwdMatch: false,
-                noAsign: false
+                edit: false,
             }
         },
         created(){
             window.document.title = 'Edit User | Admin';
-            api.get(`users/${this.userId}`)
+            api.get(`user/${this.userId}`)
                 .then((res) => {
                     this.user = res.data;
                     this.name = res.data.name;
@@ -110,28 +116,21 @@
         },
         methods: {
             editUser(){
+                this.edit = true;
+            },
+            authUserEdit(){
                 var reqBody = {
                     name: this.name,
                     email: this.email,
-                    password: this.newPwd,
                     title: this.title,
                     description: this.description,
                     age: this.age,
                     image: this.image_url,
                 };
-                if(this.newPwd = ''){
-                    delete reqBody.password;
-                };
                 if(this.pwd != this.user.password){
                     this.wrongPwd = true;
-                } else if (this.newPwd != this.authNewPwd) {
-                    this.noPwdMatch = true;
-                } else if (this.newPwd = ''){
-                    this.pwd = this.user.password;
-                    this.newPwd = this.user.password;
-                    this.noAsign = true;
                 } else {
-                    api.patch(`users/${this.user._id}`,reqBody)
+                    api.patch(`user/${this.user._id}`,reqBody)
                         .then((res) => {
                             this.$router.push('/admin');
                         });
@@ -144,5 +143,12 @@
 <style scoped>
     .panel {
         margin-top: 100px;
+    }
+    .modal-wrapper {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 10000;
+        background: rgba(0,0,0,.5);
     }
 </style>

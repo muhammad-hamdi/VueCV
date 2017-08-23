@@ -3,7 +3,19 @@
 	<div class="row">
 		<div class="col-md-4 col-xs-12 col-md-offset-4">
 				<form>
-					<p class="h3 text-center mb-4">Sign in</p>
+					<p class="h3 text-center mb-4">Sign Up</p>
+
+                    <div class="md-form">
+						<i class="fa fa-user prefix grey-text"></i>
+						<input type="text" id="defaultForm-username" v-model="name" class="form-control">
+						 <label for="defaultForm-name">Your Name</label>
+					</div>
+
+                    <div class="md-form">
+						<i class="fa fa-at prefix grey-text"></i>
+						<input type="text" id="defaultForm-username" v-model="username" class="form-control">
+						 <label for="defaultForm-username">Your Username</label>
+					</div>
 
 					<div class="md-form">
 						<i class="fa fa-envelope prefix grey-text"></i>
@@ -18,9 +30,9 @@
 					</div>
 
 					<div class="text-center">
-						<button class="btn btn-default" @click.prevent='login'>Login</button>
+						<button class="btn btn-default" @click.prevent='signUp'>Sign Up</button>
 					</div>
-					<span>Not registered ? </span><router-link to="/admin/join"><span>Sign Up</span></router-link>
+                    <span>Already joined ? </span><router-link to="/admin/login"><span>Login</span></router-link>
 				</form>
 		</div>
 	</div>
@@ -32,20 +44,24 @@
 	export default {
 		data(){
 			return {
+                name: '',
+                username: '',
 				email: '',
-				password: ''
+				password: '',
 			}
 		},
 		created(){
-			window.document.title = 'Login | Admin';
+			window.document.title = 'Register | Admin';
 			var token = localStorage.getItem('token')
 		    if(token) {
 			  this.$router.push('/admin');
 			}
 		},
 		methods: {
-				login(){
-					api.post('login', {
+				signUp(){
+					api.post('register', {
+                        name: this.name,
+                        username: this.username,
 						email: this.email,
 						password: this.password
 					})
