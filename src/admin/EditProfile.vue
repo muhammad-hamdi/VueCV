@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-6 col-xs-12 col-md-offset-3">
                         <div class="panel panel-danger">
-                            <div class="panel-heading text-center"><h3>Verify Your Password</h3></div>
+                            <div class="panel-heading"><h3 style="float: right; font-size: 26px;cursor: pointer;" @click="close">&times;</h3><h3>Verify Your Password</h3></div>
                             <div class="panel-body">
                                 <div class="md-form">
                                     <input type="password" id="defaultForm-password" v-model="pwd" class="form-control">
@@ -135,6 +135,9 @@
                             this.$router.push('/admin');
                         });
                 }
+            },
+            close(){
+                this.edit = false;
             }
         }
     }
