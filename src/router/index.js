@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import AppPage from '@/main/AppPage'
-import Admin from '@/admin/Admin'
-import Login from '@/admin/Login'
-import Register from '@/admin/Register'
-import EditProfile from '@/admin/EditProfile'
+import Profile from '@/profile/Profile'
+import EditProfile from '@/profile/EditProfile'
+import Login from '@/auth/Login'
+import Register from '@/auth/Register'
 
 Vue.use(Router)
 
@@ -15,19 +15,19 @@ export default new Router({
       component: AppPage
     },
     {
-    	path: '/admin',
-    	component: Admin
+    	path: '/profile',
+    	component: Profile
     },
     {
-    	path: '/admin/login',
+    	path: '/login',
     	component: Login
     },
     {
-      path: '/admin/join',
+      path: '/join',
       component: Register
     },
     {
-      path: '/admin/edit/:id',
+      path: '/profile/edit/:id',
       component: EditProfile
     }
   ]

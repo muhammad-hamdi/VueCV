@@ -1,106 +1,15 @@
 <template>
 	<div class="container-fluid">
-		<div class="modal-wrapper" v-if="edit">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-xs-12 col-md-offset-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading"><h3>Edit Skill</h3><div style="float: right; font-size: 26px; cursor: pointer" @click="close">&times;</div></div>
-                            <div class="panel-body">
-							<label for="defaultForm-name">Skill Name</label>
-                                <div class="md-form">
-                                    <input type="text" 
-									id="defaultForm-name" 
-									v-model="skillEdit.name" 
-									class="form-control">
-                                </div>
-								<label for="defaultForm-image">Skill Img URL</label>
-								<div class="md-form">
-                                    <input type="text" 
-									id="defaultForm-image" 
-									v-model="skillEdit.image_url" 
-									class="form-control">
-                                </div>
-								<label for="defaultForm-percent">Skill Percentage</label>								
-								<div class="md-form">
-                                    <input type="text" 
-									placeholder="Skill Percentage" 
-									id="defaultForm-percent" 
-									v-model="skillEdit.percent" 
-									class="form-control">
-                                </div>
 
-								<div class="form-group">
-									<label for="sel">Skill Category</label>
-									<select class="form-control" id="sel" v-model="skillEdit.category">
-										<option disabled value="">Choose a Category</option>
-										<option v-for="cat in categories">{{cat}}</option>
-									</select>
-								</div>
-                                <div class="text-right">
-                                    <button class="btn btn-primary" @click.prevent="editSkill(skillEdit._id)">Edit</button>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                            
-        </div>
-
-		<div class="modal-wrapper" v-if="editWorkCon">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-xs-12 col-md-offset-3">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading"><h3>Edit Work</h3><div style="float: right; font-size: 26px; cursor: pointer" @click="closeWork">&times;</div></div>
-                            <div class="panel-body">
-							<label for="defaultForm-name">Work Name</label>
-                                <div class="md-form">
-                                    <input type="text" 
-									id="defaultForm-name" 
-									v-model="workEdit.name" 
-									class="form-control">
-                                </div>
-								<label for="defaultForm-name">Work Link</label>
-                                <div class="md-form">
-                                    <input type="text" 
-									id="defaultForm-name" 
-									v-model="workEdit.link" 
-									class="form-control">
-                                </div>
-								<label for="defaultForm-image">Work Img URL</label>
-								<div class="md-form">
-                                    <input type="text" 
-									id="defaultForm-image" 
-									v-model="workEdit.image_url" 
-									class="form-control">
-                                </div>
-
-								<div class="form-group">
-									<label for="sel">Work Category</label>
-									<select class="form-control" id="sel" v-model="workEdit.category">
-										<option disabled value="">Choose a Category</option>
-										<option v-for="cat in categories">{{cat}}</option>
-									</select>
-								</div>
-
-								<label for="defaultForm-desc">Work Description</label>								
-								<div class="md-form">
-                                    <textarea id="defaultForm-desc" class="md-textarea" v-model="workEdit.description"></textarea>
-                                </div>
-
-								
-                                <div class="text-right">
-                                    <button class="btn btn-primary" @click.prevent="editWork(workEdit._id)">Edit</button>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                            
-        </div>
+		<SkillEditModal :edit="edit"
+						:skillEdit="skillEdit"
+						:categories="categories"
+						@close="close"></SkillEditModal>
+						
+		<WorkEditModal 	:editWorkCon="editWorkCon"
+						:workEdit="workEdit"
+						:categories="categories"
+						@close="closeWork"></WorkEditModal>
 		<div class="row">
 			<div class="col-sm-12">
 				<nav-bar></nav-bar>
@@ -191,11 +100,54 @@
 			</div>
 		</div>
 	</div>
+	<!---->
+	<div class="row" id="exp" v-if="user && user.username">
+		<div class="col-md-8 col-sm-12 col-md-offset-2">
+			<div class="panel panel-primary">
+				<div class="panel-heading text-center"><h3>Work Experience</h3></div>
+				<div class="panel-body">
+						<div class="md-form">
+							<input type="text" id="name" v-model="expName" class="form-control">
+							<label for="name">Company Name</label>
+						</div>
+						<div class="md-form">
+							<input type="text" id="role" v-model="expRole" class="form-control">
+							<label for="role">Role</label>
+						</div>
+						<div class="md-form">
+							<strong>Start Date</strong>
+							<input type="date" v-model="expStart" placeholder="Start Date" class="form-control">
+						</div>
+						<div class="md-form">
+							<strong>End Date</strong>
+							<input type="date" id="end" v-model="expEnd" placeholder="End Date" class="form-control">
+						</div>
+						<div class="md-form">
+							<textarea class="md-textarea" id="desc" v-model="expDescription"></textarea>
+							<label for="desc">Description</label>
+						</div>
+						<div class="md-form text-right">
+							<button class="btn btn-primary" @click="addWorkExp">Add Work Exp</button>
+						</div>
+						<ul class="list-group col-md-6 col-md-offset-3" id="skillList">
+							<li v-for="(exp, index) in workExp" class="list-group-item">
+								<p>{{exp.start_date - exp.end_date}}</p>
+								<h3 class="skill-title">{{exp.name}}</h3>
+								<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
+								<i class="fa fa-pencil-square-o fa-lg" @click="editModalSkill(exp)"></i>
+							</li>
+						</ul>
+				</div>
+			</div>
+		</div>
+		</div>
 	</div>
 </template>
 
 <script>
 	import NavBar from './NavBar.vue';
+	import SkillEditModal from './SkillEditModal.vue'
+	import WorkEditModal from './WorkEditModal.vue'
     import {api} from '../config/axios'
 
 	export default {
@@ -204,6 +156,7 @@
 				user: [],
 				skills: [],
 				portfolio: [],
+				workExp: [],
 				skillName: '',
 				skillImage: '',
 				skillCat: '',
@@ -218,14 +171,18 @@
 				'Graphic Design',
 				'Game Development',
 				'Embedded Systems'],
-				imageSrc: 'http://nahmdong.com/vitalhill/img/default.png',
 				workName: '',
 				workImage: '',
 				workCat: '',
 				workDescription: '',
 				workLink: '',
 				editWorkCon: false,
-				workEdit: ''
+				workEdit: '',
+				expName:'',
+				expDescription: '',
+				expStart: '',
+				expEnd: '',
+				expRole: ''
 			}
 		},
 		created(){
@@ -247,10 +204,14 @@
 			api.get('user/'+ id +'/portfolio')
 				.then(res => {
 					this.portfolio = res.data;
+				});
+			api.get('user/'+ id +'/exp')
+				.then(res => {
+					this.workExp = res.data;
 				})
 		  },
 		  components: {
-			NavBar,
+			NavBar, SkillEditModal, WorkEditModal
 		  },
 		  methods: {
 			  logOut(){
@@ -308,7 +269,8 @@
 					  user_id: localStorage.getItem('id'),
 					  category: this.workCat,
 					  link: this.workLink,
-					  description: this.workDescription
+					  description: this.workDescription,
+					  role: this.expRole
 					  };
 				  api.post('user/portfolio', reqBody)
 				  	.then(res => {
@@ -318,6 +280,7 @@
 						  this.workCat = '';
 						  this.workLink = '';
 						  this.workDescription = '';
+						  this.expRole = '';
 					  })
 			  },
 			  deleteWork(id, index){
@@ -332,17 +295,26 @@
 			  closeWork(){
 				  this.editWorkCon = false
 			  },
-			  editWork(id){
-				  var editReqBody = {
-					  name: this.workEdit.name,
-					  image_url: this.workEdit.image_url,
-					  category: this.workEdit.category,
-					  description: this.workEdit.percent,
-					  link: this.workEdit.link
-				  };
-				  api.patch('user/portfolio/' + id, editReqBody)
-					  .then(res => this.editWorkCon = false)
-					  .catch(err => {throw err});
+			  addWorkExp(){
+				  var reqBody = {
+					  name: this.expName,
+					  description: this.expDescription,
+					  start_date: this.expStart,
+					  end_date: this.expEnd,
+					  user_id: localStorage.getItem('id')
+				  }
+				  api.post('user/exp', reqBody)
+				  	.then(res => {
+						  this.workExp.push(res.data);
+						  this.expName = '';
+						  this.expDescription = '';
+						  this.expStart = '';
+						  this.expEnd = '';
+					  })
+			  },
+			  deleteExp(id, index){
+				  api.delete('user/exp/'+id)
+				  	.then(res => { this.workExp.splice(index, 1)});
 			  }
 		  }
 	}
@@ -369,7 +341,7 @@
 		border-radius: 0 !important;
 		border: none !important;
 	}
-	    .modal-wrapper {
+	.modal-wrapper {
         width: 101%;
         height: 100%;
         position: fixed;
@@ -381,7 +353,7 @@
 		display: inline-block;
 	}
 	.modal-wrapper .panel {
-		margin: 40px auto;
+		margin: 30px auto;
 	}
 	#skillList {
 		padding-right: 0;
