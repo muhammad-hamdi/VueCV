@@ -32,7 +32,7 @@
 					<div class="text-center">
 						<button class="btn btn-default" @click.prevent='signUp'>Sign Up</button>
 					</div>
-                    <span>Already joined ? </span><router-link to="/admin/login"><span>Login</span></router-link>
+                    <span>Already joined ? </span><router-link to="/login"><span>Login</span></router-link>
 				</form>
 		</div>
 	</div>
@@ -51,10 +51,10 @@
 			}
 		},
 		created(){
-			window.document.title = 'Register | Admin';
+			window.document.title = 'Register | CV';
 			var token = localStorage.getItem('token')
 		    if(token) {
-			  this.$router.push('/admin');
+			  this.$router.push('/profile');
 			}
 		},
 		methods: {
@@ -70,7 +70,7 @@
 								id = res.data.id;
 							localStorage.setItem('token', token);
 							localStorage.setItem('id', id);
-							this.$router.push('/admin');
+							this.$router.push('/profile');
 						})
 						.catch((err) => {
 							throw err;

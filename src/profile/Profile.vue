@@ -21,13 +21,18 @@
 		<div class="row" id="profile" v-if="user && user.username">
 		<div class="col-md-8 col-sm-12 col-md-offset-2">
 			<div class="panel panel-primary">
-				<div class="panel-heading"><button class="btn btn-danger logout" @click="logOut">Log Out</button><h3>Welcome Back!</h3></div>
+				<div class="panel-heading"><button class="btn btn-danger logout" @click="logOut">Log Out</button>
+					<h3 v-if="!welcomeEnd">Welcome Back!</h3>
+				<transition name="fade">
+					<h3 v-if="welcomeEnd">{{user.name}}</h3>
+				</transition>
+				</div>
 				<div class="panel-body text-center">
 					<img :src="user.image">
 					<h3>{{user.name}}</h3>
 					<h4 v-if="user.title">{{user.title}}</h4>
 					<p v-if="user.description">{{user.description}}</p>
-					<router-link :to="{path: `/admin/edit/${user._id}`}">
+					<router-link :to="{path: `/profile/edit/${user._id}`}">
 						<button class="btn btn-primary">edit profile</button>
 					</router-link>
 					</div>
@@ -124,15 +129,17 @@
 						<div class="md-form text-right">
 							<button class="btn btn-primary" @click="addWorkExp">Add Work Exp</button>
 						</div>
-						<ul class="list-group col-md-6 col-md-offset-3" id="skillList">
-							<li v-for="(exp, index) in workExp" class="list-group-item workExp">
-								
-								<h3 style="display: inline-block">Company: {{exp.name}}</h3>
-								<h4>Role: {{exp.role}}</h4>
-								<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
-								<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
-							</li>
-						</ul>
+							<div class="col-md-12" id="expList">
+								<div class="row">
+									<div v-for="(exp, index) in workExp" class="col-md-6 workExp">
+										<h3>Company: {{exp.name}}</h3>
+										<h4>Role: {{exp.role}}</h4>
+										<p>{{exp.description}}</p>
+										<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
+										<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
+									</div>
+								</div>
+							</div>
 				</div>
 			</div>
 		</div>
@@ -179,7 +186,8 @@
 				expDescription: '',
 				expRole: '',
 				expCon: false,
-				expEdit: ''
+				expEdit: '',
+				welcomeEnd: false,
 			}
 		},
 		created(){
@@ -187,9 +195,9 @@
 			var token = localStorage.getItem('token'),
 				id = localStorage.getItem('id');
 		    if(!token) {
-		      this.$router.push('/admin/login');
+		      this.$router.push('/login');
 			}
-			window.document.title = 'Dashboard | Admin'
+			window.document.title = 'Profile | CV'
             api.get('user/'+ id)
                 .then((res) => {
                     this.user = res.data;
@@ -206,6 +214,8 @@
 				.then(res => {
 					this.workExp = res.data;
 				})
+			var self = this;
+			setTimeout(() => {this.welcomeEnd = true}, 5000);
 		  },
 		  components: {
 			NavBar, SkillEditModal, WorkEditModal, ExpEditModal
@@ -214,7 +224,7 @@
 			  logOut(){
 				  localStorage.removeItem('token');
 				  localStorage.removeItem('id');
-				  this.$router.push('/admin/login');
+				  this.$router.push('/login');
 			  },
 			  addSkill(){
 				  var reqBody = {
@@ -443,7 +453,51 @@
 	ul li.col-md-4 {
 		color: #333;
 	}
+	#expList .col-md-6 {
+		width: 47.5%;
+	}
+	.workExp {
+		position: relative;
+		display: block;
+		padding: 30px 10px;
+		margin: 10px 10px;
+		background-color: #fff;
+		border: 1px solid #ddd;
+		border-radius: 3px;
+		box-shadow: 0px 2px 8px 0px rgba(0,0,0,.2);
+	}
 	.workExp i {
-		transform: translateY(-60px)
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		transition: all .2s ease-in-out;
+	}
+	.workExp .fa:hover {
+		color: #5A95F5;
+		cursor: pointer;
+	}
+	.workExp i:last-of-type {margin-right: 20px}
+	.workExp h3 {
+		margin-top: 0;
+		padding-top: 0;
+		transform: translateY(-15px);
+		display: inline-block;
+	}
+	.workExp h4 {
+		transform: translateY(-20px);
+	}
+	.workExp p {
+		text-align: left;
+		margin: 0;
+	}
+	.fade-enter {
+		opacity: 0;
+	}
+	.fade-enter-active {
+		transition: opacity 1s;
+	}
+	.fade-leave-active {
+		transition: opacity 1s;
+		opacity: 0;
 	}
 </style>

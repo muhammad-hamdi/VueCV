@@ -132,7 +132,7 @@
                 } else {
                     api.patch(`user/${this.user._id}`,reqBody)
                         .then((res) => {
-                            this.$router.push('/admin');
+                            this.$router.push('/profile');
                         });
                 }
             },

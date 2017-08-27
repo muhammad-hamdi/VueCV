@@ -9,17 +9,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <router-link to="/admin" class="navbar-brand">Dashboard</router-link>
+      <router-link to="/profile" v-scroll-to="'#profile'" class="navbar-brand">Profile</router-link>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#" v-scroll-to="'#profile'">Profile<span class="sr-only">(current)</span></a></li>
         <li><a href="#" v-scroll-to="'#skills'">Skills</a></li>
         <li><a href="#" v-scroll-to="'#portfolio'">Portfolio</a></li>
-        <li><a href="#" v-scroll-to="'#exp'">Expertise</a></li>
-        <li><a href="#">Contact Info</a></li>
+        <li><a href="#" v-scroll-to="'#exp'">Experience</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         

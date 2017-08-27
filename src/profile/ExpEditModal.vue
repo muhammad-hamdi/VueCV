@@ -6,6 +6,7 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading"><h3>Edit Work</h3><div style="float: right; font-size: 26px; cursor: pointer" @click="closeExp">&times;</div></div>
                             <div class="panel-body">
+                                <label for="defaultForm-name">Company Name</label>	
                                 <div class="md-form">
                                     <input type="text"
 									placeholder="Company Name"
@@ -13,10 +14,11 @@
 									v-model="expEdit.name" 
 									class="form-control">
                                 </div>
+                                <label for="defaultForm-role">Role</label>
                                 <div class="md-form">
                                     <input type="text" 
 									placeholder="Role"
-									id="defaultForm-name" 
+									id="defaultForm-role" 
 									v-model="expEdit.role" 
 									class="form-control">
                                 </div>
