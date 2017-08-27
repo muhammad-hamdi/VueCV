@@ -43,7 +43,7 @@
 
 								
                                 <div class="text-right">
-                                    <button class="btn btn-primary" @click.prevent="editWork(workEdit._id)">Edit</button>
+                                    <button :class="{'btn':true, 'btn-primary': true, 'disabled': control}" @click.prevent="editWork(workEdit._id)">Edit</button>
                                     </div>
                                 </div>
                         </div>
@@ -58,20 +58,22 @@
     import {api} from '../config/axios.js'
     export default {
         props: ['editWorkCon', 'workEdit', 'categories'],
+        data(){
+            return {
+                control: false
+            }
+        },
         methods: {
             closeWork(){
                 this.$emit('close', false)
             },
             editWork(id){
-				  var editReqBody = {
-					  name: this.workEdit.name,
-					  image_url: this.workEdit.image_url,
-					  category: this.workEdit.category,
-					  description: this.workEdit.description,
-					  link: this.workEdit.link
-				  };
-				  api.patch('user/portfolio/' + id, editReqBody)
-					  .then(res => this.$emit('close', false))
+                this.control = true;
+				  api.patch('user/portfolio/' + id, this.workEdit)
+					  .then(res => {
+                            this.$emit('close', false);
+                            this.control = false;
+                          })
 					  .catch(err => {throw err});
 			  }
         }

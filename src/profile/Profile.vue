@@ -10,6 +10,9 @@
 						:workEdit="workEdit"
 						:categories="categories"
 						@close="closeWork"></WorkEditModal>
+		<ExpEditModal 	:expCon="expCon"
+						:expEdit="expEdit"
+						@close="closeExp"></ExpEditModal>
 		<div class="row">
 			<div class="col-sm-12">
 				<nav-bar></nav-bar>
@@ -115,14 +118,6 @@
 							<label for="role">Role</label>
 						</div>
 						<div class="md-form">
-							<strong>Start Date</strong>
-							<input type="date" v-model="expStart" placeholder="Start Date" class="form-control">
-						</div>
-						<div class="md-form">
-							<strong>End Date</strong>
-							<input type="date" id="end" v-model="expEnd" placeholder="End Date" class="form-control">
-						</div>
-						<div class="md-form">
 							<textarea class="md-textarea" id="desc" v-model="expDescription"></textarea>
 							<label for="desc">Description</label>
 						</div>
@@ -130,11 +125,12 @@
 							<button class="btn btn-primary" @click="addWorkExp">Add Work Exp</button>
 						</div>
 						<ul class="list-group col-md-6 col-md-offset-3" id="skillList">
-							<li v-for="(exp, index) in workExp" class="list-group-item">
-								<p>{{exp.start_date - exp.end_date}}</p>
-								<h3 class="skill-title">{{exp.name}}</h3>
+							<li v-for="(exp, index) in workExp" class="list-group-item workExp">
+								
+								<h3 style="display: inline-block">Company: {{exp.name}}</h3>
+								<h4>Role: {{exp.role}}</h4>
 								<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
-								<i class="fa fa-pencil-square-o fa-lg" @click="editModalSkill(exp)"></i>
+								<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
 							</li>
 						</ul>
 				</div>
@@ -148,6 +144,7 @@
 	import NavBar from './NavBar.vue';
 	import SkillEditModal from './SkillEditModal.vue'
 	import WorkEditModal from './WorkEditModal.vue'
+	import ExpEditModal from './ExpEditModal.vue'
     import {api} from '../config/axios'
 
 	export default {
@@ -180,9 +177,9 @@
 				workEdit: '',
 				expName:'',
 				expDescription: '',
-				expStart: '',
-				expEnd: '',
-				expRole: ''
+				expRole: '',
+				expCon: false,
+				expEdit: ''
 			}
 		},
 		created(){
@@ -211,7 +208,7 @@
 				})
 		  },
 		  components: {
-			NavBar, SkillEditModal, WorkEditModal
+			NavBar, SkillEditModal, WorkEditModal, ExpEditModal
 		  },
 		  methods: {
 			  logOut(){
@@ -299,8 +296,7 @@
 				  var reqBody = {
 					  name: this.expName,
 					  description: this.expDescription,
-					  start_date: this.expStart,
-					  end_date: this.expEnd,
+					  role: this.expRole,
 					  user_id: localStorage.getItem('id')
 				  }
 				  api.post('user/exp', reqBody)
@@ -308,13 +304,19 @@
 						  this.workExp.push(res.data);
 						  this.expName = '';
 						  this.expDescription = '';
-						  this.expStart = '';
-						  this.expEnd = '';
+						  this.expRole = '';
 					  })
 			  },
 			  deleteExp(id, index){
 				  api.delete('user/exp/'+id)
 				  	.then(res => { this.workExp.splice(index, 1)});
+			  },
+			  editModalExp(exp){
+				  this.expCon = true;
+				  this.expEdit = exp;
+			  },
+			  closeExp(){
+				  this.expCon = false;
 			  }
 		  }
 	}
@@ -362,6 +364,9 @@
 	.skill-title {
 		display: inline;
 		margin-left:35%;
+	}
+	.list-group-item {
+		    padding: 25px 15px;
 	}
 	.list-group-item:hover {
 		color: #333;
@@ -437,5 +442,8 @@
 	}
 	ul li.col-md-4 {
 		color: #333;
+	}
+	.workExp i {
+		transform: translateY(-60px)
 	}
 </style>

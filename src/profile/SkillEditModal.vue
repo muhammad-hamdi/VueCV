@@ -37,7 +37,7 @@
 									</select>
 								</div>
                                 <div class="text-right">
-                                    <button class="btn btn-primary" @click.prevent="editSkill(skillEdit._id)">Edit</button>
+                                    <button :class="{'btn':true, 'btn-primary': true, 'disabled': control}" @click.prevent="editSkill(skillEdit._id)">Edit</button>
                                     </div>
                                 </div>
                         </div>
@@ -52,20 +52,21 @@
     import {api} from '../config/axios.js'
     export default {
         props: ['edit', 'skillEdit', 'categories'],
+		data(){
+            return {
+                control: false
+            }
+        },
         methods: {
             close(){
                 this.$emit('close', false);
             },
             editSkill(id){
-				  var editReqBody = {
-					  name: this.skillEdit.name,
-					  image_url: this.skillEdit.image_url,
-					  category: this.skillEdit.category,
-					  percent: this.skillEdit.percent
-				  };
-				  api.patch('user/skills/'+ id, editReqBody)
+				this.control = true;
+				  api.patch('user/skills/'+ id, this.skillEdit)
 				  	.then((res) => {
 						  this.$emit('close', false);
+						  this.control = false;
 					  })
 			  },
         }
