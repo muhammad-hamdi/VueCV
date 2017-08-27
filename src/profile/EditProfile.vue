@@ -8,14 +8,14 @@
                             <div class="panel-heading"><h3 style="float: right; font-size: 26px;cursor: pointer;" @click="close">&times;</h3><h3>Verify Your Password</h3></div>
                             <div class="panel-body">
                                 <div class="md-form">
-                                    <input type="password" id="defaultForm-password" v-model="pwd" class="form-control">
+                                    <input type="password" id="defaultForm-password" v-model="pwd" @keyup.enter="authUserEdit" class="form-control">
                                     <label for="defaultForm-password">Password</label>
                                 </div>
                                 <div class="alert alert-danger" v-if="wrongPwd">
                                     <strong>Wrong</strong> Password!
                                 </div>
                                 <div class="text-right">
-                                    <button class="btn btn-default" @click.prevent="authUserEdit">Edit</button>
+                                    <button :class="{'btn':true, 'btn-default': true, 'disabled': control}" @click.prevent="authUserEdit">Edit</button>
                                     </div>
                                 </div>
                         </div>
@@ -96,6 +96,7 @@
                 description: '',
                 wrongPwd: false,
                 edit: false,
+                control: false,
             }
         },
         created(){
@@ -119,6 +120,7 @@
                 this.edit = true;
             },
             authUserEdit(){
+                this.control = true;
                 var reqBody = {
                     name: this.name,
                     email: this.email,
@@ -129,10 +131,12 @@
                 };
                 if(this.pwd != this.user.password){
                     this.wrongPwd = true;
+                    this.control = false;
                 } else {
                     api.patch(`user/${this.user._id}`,reqBody)
                         .then((res) => {
                             this.$router.push('/profile');
+                            this.control = false;
                         });
                 }
             },
