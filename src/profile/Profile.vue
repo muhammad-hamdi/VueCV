@@ -215,7 +215,7 @@
 					this.workExp = res.data;
 				})
 			var self = this;
-			setTimeout(() => {this.welcomeEnd = true}, 5000);
+			setTimeout(() => {this.welcomeEnd = true}, 2500);
 		  },
 		  components: {
 			NavBar, SkillEditModal, WorkEditModal, ExpEditModal
@@ -376,7 +376,7 @@
 		margin-left:35%;
 	}
 	.list-group-item {
-		    padding: 25px 15px;
+		padding: 15px;
 	}
 	.list-group-item:hover {
 		color: #333;
