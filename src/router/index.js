@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AppPage from '@/main/AppPage'
+import CvPreview from '@/main/CvPreview'
 import Profile from '@/profile/Profile'
 import EditProfile from '@/profile/EditProfile'
 import Login from '@/auth/Login'
@@ -12,7 +12,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: AppPage
+      redirect: '/login'
+    },
+    {
+      path: '/cv/:id',
+      component: CvPreview
     },
     {
     	path: '/profile',

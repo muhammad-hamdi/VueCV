@@ -110,7 +110,7 @@
 	</div>
 	<!---->
 	<div class="row" id="exp" v-if="user && user.username">
-		<div class="col-md-8 col-sm-12 col-md-offset-2">
+		<div class="col-md-8 col-xs-12 col-md-offset-2">
 			<div class="panel panel-primary">
 				<div class="panel-heading text-center"><h3>Work Experience</h3></div>
 				<div class="panel-body">
@@ -131,12 +131,14 @@
 						</div>
 							<div class="col-md-12" id="expList">
 								<div class="row">
-									<div v-for="(exp, index) in workExp" class="col-md-6 workExp">
-										<h3>Company: {{exp.name}}</h3>
-										<h4>Role: {{exp.role}}</h4>
-										<p>{{exp.description}}</p>
-										<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
-										<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
+									<div v-for="(exp, index) in workExp" class="col-md-6">
+										<div class="workExp">
+											<h3>Company: {{exp.name}}</h3>
+											<h4>Role: {{exp.role}}</h4>
+											<p>{{exp.description}}</p>
+											<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
+											<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -452,9 +454,6 @@
 	}
 	ul li.col-md-4 {
 		color: #333;
-	}
-	#expList .col-md-6 {
-		width: 47.5%;
 	}
 	.workExp {
 		position: relative;

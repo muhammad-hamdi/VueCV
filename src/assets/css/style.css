@@ -112,15 +112,12 @@ h2:after {
 body {
     background-color: #F6F7F9;
 }
-#biography {
-    overflow: hidden;
-}
 .canvas {
-  position: absolute;
+  position: fixed;
   display: block;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: -100;
 }
 .skill {
     width: 100%;
