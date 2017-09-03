@@ -62,8 +62,9 @@
                         v-on:vdropzone-success="showSuccess"
                         :dropzoneOptions="{
                             'headers': {'x-access-token': token},
+                            'name': 'avatar',
                             'autoProcessQueue': false
-                        }" name="avatar">
+                        }">
                             <input type="hidden" name="token" value="xxx">
                         </dropzone>
                         <hr>
