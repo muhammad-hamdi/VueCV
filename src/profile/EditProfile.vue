@@ -64,7 +64,7 @@
                             'headers': {'x-access-token': token},
                             'autoProcessQueue': false
                         }" name="avatar">
-                            <input type="hidden" name="avatar" value="xxx">
+                            <input type="hidden" name="token" value="xxx">
                         </dropzone>
                         <hr>
                         <div class="md-form">
