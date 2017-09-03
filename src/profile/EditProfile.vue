@@ -57,11 +57,16 @@
                             <label for="defaultForm-age">Your Age</label>
                         </div>
 
-                        <div class="md-form">
-                            <input type="text" id="defaultForm-image-url" v-model="image_url" class="form-control">
-                            <label for="defaultForm-image-url">Your Image URL</label>
-                        </div>
-
+                        <dropzone id="myVueDropzone" 
+                        :url="config.url +'/api/uploads/'" 
+                        v-on:vdropzone-success="showSuccess"
+                        :dropzoneOptions="{
+                            'headers': {'x-access-token': token},
+                            'autoProcessQueue': false
+                        }" name="avatar">
+                            <input type="hidden" name="avatar" value="xxx">
+                        </dropzone>
+                        <hr>
                         <div class="md-form">
                             <textarea id="defaultForm-description" v-model="description" class="md-textarea"></textarea>
                             <label for="defaultForm-description">Your Description</label>
@@ -78,8 +83,10 @@
 </template>
 
 <script>
-    import NavBar from './NavBar.vue';
+    import NavBar from './NavBar.vue'
     import {api} from '../config/axios'
+    import config from '../config/config'
+    import Dropzone from 'vue2-dropzone'
     export default {
         data(){
             return {
@@ -97,6 +104,8 @@
                 wrongPwd: false,
                 edit: false,
                 control: false,
+                config: config,
+                token: localStorage.token
             }
         },
         created(){
@@ -109,11 +118,10 @@
                     this.title = res.data.title;
                     this.description = res.data.description;
                     this.age = res.data.age;
-                    this.image_url = res.data.image;
                 });
         },
         components: {
-            NavBar
+            NavBar, Dropzone
         },
         methods: {
             editUser(){
@@ -127,12 +135,12 @@
                     title: this.title,
                     description: this.description,
                     age: this.age,
-                    image: this.image_url,
                 };
                 if(this.pwd != this.user.password){
                     this.wrongPwd = true;
                     this.control = false;
                 } else {
+                    Dropzone.processQueue()
                     api.patch(`user/${this.user._id}`,reqBody)
                         .then((res) => {
                             this.$router.push('/profile');
@@ -142,6 +150,9 @@
             },
             close(){
                 this.edit = false;
+            },
+            showSuccess(){
+                console.log('file uploaded successfully');
             }
         }
     }
