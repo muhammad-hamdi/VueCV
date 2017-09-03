@@ -18,6 +18,7 @@
         <li><a href="#" v-scroll-to="'#skills'">Skills</a></li>
         <li><a href="#" v-scroll-to="'#portfolio'">Portfolio</a></li>
         <li><a href="#" v-scroll-to="'#exp'">Experience</a></li>
+        <li><router-link :to="{path: `/cv/${user._id}`}">Preview</router-link></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -28,8 +29,20 @@
 </template>
 
 <script>
+  import {api} from '../config/axios.js'
     export default {
-        
+        data(){
+          return {
+            user: {}
+          }
+        },
+        created(){
+          var id = localStorage.getItem('id');
+            api.get('user/'+ id)
+                  .then((res) => {
+                      this.user = res.data;
+                  });
+        },
     }
 </script>
 

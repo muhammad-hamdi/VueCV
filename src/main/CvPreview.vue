@@ -1,5 +1,9 @@
 <template>
-  <div>
+<div>
+    <div class="text-center" v-if="loading">
+        <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+    </div>
+    <div v-if="data">
     <div class="row">
             <div class="hidden-xs hidden-sm">
                 <!-- Start Navbar -->
@@ -169,7 +173,6 @@
                                     <input type="text" id="form3" class="form-control" name="name" v-model="emailData.name">
                                     <label for="form3" class="">Your name</label>
                                 </div>
-                                <input type="hidden" v-model="data.user.email">
                                 <div class="md-form">
                                     <i class="fa fa-envelope prefix grey-text"></i>
                                     <input type="email" id="form2" class="form-control" name="email" v-model="emailData.senderEmail">
@@ -217,36 +220,40 @@
               </div>
           </div>
   </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import config from '../config/config'
+
 export default {
   name: 'hello',
   data () {
     return {
       data: {},
       emailData: {
-          userEmail: '',
           senderEmail: '',
           name: '',
           subject: '',
           message: '',
-      }
+      },
+      loading: false
     }
   },
   beforeCreate(){
       axios.get(`${config.url}/api/data/${this.$route.params.id}`)
         .then((res) => {
             this.data = res.data;
+            this.loading = false;
             window.document.title = res.data.user.name + ' | CV';
         })
   },
+  created(){this.loading = true},
   methods: {
       sendEmail(){
           var reqData = {
-              userEmail: this.emailData.userEmail,
+              userEmail: this.data.user.email,
               senderEmail: this.emailData.senderEmail,
               name: this.emailData.name,
               subject: this.emailData.subject,
@@ -259,6 +266,7 @@ export default {
                 this.emailData.subject = '';
                 this.emailData.message = '';
             })
+            .catch(err => {if (err) throw err})
       }
   }
 }

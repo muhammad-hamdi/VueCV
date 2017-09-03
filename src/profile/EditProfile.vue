@@ -15,7 +15,7 @@
                                     <strong>Wrong</strong> Password!
                                 </div>
                                 <div class="text-right">
-                                    <button :class="{'btn':true, 'btn-default': true, 'disabled': control}" @click.prevent="authUserEdit">Edit</button>
+                                    <button :class="{'btn':true, 'btn-default': true, 'disabled': control}" :disabled="control" @click.prevent="authUserEdit">Edit</button>
                                     </div>
                                 </div>
                         </div>

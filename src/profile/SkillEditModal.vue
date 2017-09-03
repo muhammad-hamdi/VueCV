@@ -37,7 +37,7 @@
 									</select>
 								</div>
                                 <div class="text-right">
-                                    <button :class="{'btn':true, 'btn-primary': true, 'disabled': control}" @click.prevent="editSkill(skillEdit._id)">Edit</button>
+                                    <button :class="{'btn':true, 'btn-primary': true, 'disabled': control}" :disabled="control" @click.prevent="editSkill(skillEdit._id)">Edit</button>
                                     </div>
                                 </div>
                         </div>
