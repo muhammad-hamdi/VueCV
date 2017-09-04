@@ -77,10 +77,15 @@
                             <label for="defaultForm-name">Work Name</label>
                         </div>
 
-                        <div class="md-form">
-                            <input type="text" id="defaultForm-email" v-model="workImage" class="form-control">
-                            <label for="defaultForm-email">Work Img URL</label>
-                        </div>
+                        <dropzone id="myVueDropzone" 
+                        :url="config.url +'/api/uploads/works/'" 
+                        v-on:vdropzone-success="showSuccess"
+                        :dropzoneOptions="{
+                            'headers': {'x-access-token': token},
+                        }">
+                            <input type="hidden" name="token" value="xxx">
+                        </dropzone>
+                        <hr>
 
 						<div class="md-form">
                             <input type="text" id="defaultForm-link" v-model="workLink" class="form-control">
@@ -155,7 +160,8 @@
 	import WorkEditModal from './WorkEditModal.vue'
 	import ExpEditModal from './ExpEditModal.vue'
     import {api} from '../config/axios'
-
+    import config from '../config/config'
+	import Dropzone from 'vue2-dropzone'
 	export default {
 		data(){
 			return {
@@ -190,6 +196,9 @@
 				expCon: false,
 				expEdit: '',
 				welcomeEnd: false,
+				token: localStorage.token,
+				workId: '',
+				config: config
 			}
 		},
 		created(){
@@ -220,7 +229,7 @@
 			setTimeout(() => {this.welcomeEnd = true}, 2500);
 		  },
 		  components: {
-			NavBar, SkillEditModal, WorkEditModal, ExpEditModal
+			NavBar, SkillEditModal, WorkEditModal, ExpEditModal, Dropzone
 		  },
 		  methods: {
 			  logOut(){
@@ -274,7 +283,6 @@
 			  addWork(){
 				  var reqBody = {
 					  name: this.workName,
-					  image_url: this.workImage,
 					  user_id: localStorage.getItem('id'),
 					  category: this.workCat,
 					  link: this.workLink,
@@ -283,13 +291,15 @@
 					  };
 				  api.post('user/portfolio', reqBody)
 				  	.then(res => {
-						  this.portfolio.push(res.data);
+						  this.workId = res.data._id;
+						  api.patch('user/portfolio'+workId)
+						  	.then() // حاسس ان السطر ده مالوش لازمة D:
 						  this.workName = '';
-						  this.workImage = '';
 						  this.workCat = '';
 						  this.workLink = '';
 						  this.workDescription = '';
 						  this.expRole = '';
+						  this.portfolio.push(res.data);
 					  })
 			  },
 			  deleteWork(id, index){
