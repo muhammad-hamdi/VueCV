@@ -79,13 +79,17 @@
 
                         <dropzone id="myVueDropzone" 
                         :url="config.url +'/api/user/portfolio'" 
-                        v-on:vdropzone-success="showSuccess"
+                        v-on:vdropzone-success="workAddSuccess"
                         :dropzoneOptions="{
                             'headers': {'x-access-token': token},
                         }"
 						:autoProcessQueue="false"
 						ref="dropzone">
-                            <input type="hidden" name="token" value="xxx">
+                            <input type="hidden" name="name" v-model="workName">
+                            <input type="hidden" name="link" v-model="workLink">
+                            <input type="hidden" name="category" v-model="workCat">
+                            <input type="hidden" name="user_id" v-model="userId">
+                            <input type="hidden" name="description" v-model="workDescription">
                         </dropzone>
                         <hr>
 
@@ -201,7 +205,8 @@
 				expEdit: '',
 				welcomeEnd: false,
 				token: localStorage.token,
-				config: config
+				config: config,
+				userId: localStorage.id
 			}
 		},
 		created(){
@@ -339,7 +344,7 @@
 			  closeExp(){
 				  this.expCon = false;
 			  },
-			  showSuccess(){console.log('file sent successfully');}
+			  workAddSuccess(file, res){console.log(res);}
 		  }
 	}
 </script>
