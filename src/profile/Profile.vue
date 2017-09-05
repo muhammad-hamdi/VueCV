@@ -78,11 +78,13 @@
                         </div>
 
                         <dropzone id="myVueDropzone" 
-                        :url="config.url +'/api/uploads/works/'" 
+                        :url="config.url +'/api/user/portfolio'" 
                         v-on:vdropzone-success="showSuccess"
                         :dropzoneOptions="{
                             'headers': {'x-access-token': token},
-                        }">
+                        }"
+						:autoProcessQueue="false"
+						ref="dropzone">
                             <input type="hidden" name="token" value="xxx">
                         </dropzone>
                         <hr>
@@ -141,8 +143,10 @@
 											<h3>Company: {{exp.name}}</h3>
 											<h4>Role: {{exp.role}}</h4>
 											<p>{{exp.description}}</p>
-											<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
-											<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
+											<div class="options">
+												<i class="fa fa-trash fa-lg" @click="deleteExp(exp._id, index)"></i>
+												<i class="fa fa-pencil-square-o fa-lg" @click="editModalExp(exp)"></i>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -197,7 +201,6 @@
 				expEdit: '',
 				welcomeEnd: false,
 				token: localStorage.token,
-				workId: '',
 				config: config
 			}
 		},
@@ -287,20 +290,16 @@
 					  category: this.workCat,
 					  link: this.workLink,
 					  description: this.workDescription,
-					  role: this.expRole
 					  };
+				  this.$refs.dropzone.processQueue();
 				  api.post('user/portfolio', reqBody)
-				  	.then(res => {
-						  this.workId = res.data._id;
-						  api.patch('user/portfolio'+workId)
-						  	.then() // حاسس ان السطر ده مالوش لازمة D:
-						  this.workName = '';
-						  this.workCat = '';
-						  this.workLink = '';
-						  this.workDescription = '';
-						  this.expRole = '';
-						  this.portfolio.push(res.data);
-					  })
+				  		.then(res => {
+							this.workName = '';
+							this.workCat = '';
+							this.workLink = '';
+							this.workDescription = '';
+							this.portfolio.push(res.data);
+					  	})
 			  },
 			  deleteWork(id, index){
 				  this.portfolio.splice(index, 1);
@@ -339,14 +338,15 @@
 			  },
 			  closeExp(){
 				  this.expCon = false;
-			  }
+			  },
+			  showSuccess(){console.log('file sent successfully');}
 		  }
 	}
 </script>
 
 <style scoped>
 	.panel {
-		margin-top: 100px;
+		margin-top: 100px;	
 	}
 	.panel img {
 		width: 200px;
@@ -475,12 +475,12 @@
 		border-radius: 3px;
 		box-shadow: 0px 2px 8px 0px rgba(0,0,0,.2);
 	}
-	.workExp i {
+	.workExp .options {
 		position: absolute;
 		top: 10px;
-		right: 10px;
-		transition: all .2s ease-in-out;
+		right: -5px;
 	}
+	.workExp .fa {transition: all .2s ease-in-out;}
 	.workExp .fa:hover {
 		color: #5A95F5;
 		cursor: pointer;

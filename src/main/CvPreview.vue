@@ -21,7 +21,7 @@
           <div class="row" id="biography">
               <canvas class="canvas"></canvas>
               <div class="col-xs-12">
-                      <img src="https://lh3.googleusercontent.com/8bSkPUcQc-0pUQqoC2PbqHLkMA0IGGgH84rXJS10A1DI4ZgRuA4BrrDLJttj8O3TgNPQvk0nXqpWGhnUog=w1366-h768-rw-no" class="image-responsive personal">
+                      <img :src="data.user.image" class="image-responsive personal">
                       <h1>{{data.user.name}}</h1>
                       <p class="lead">{{data.user.title}}</p>
                       <h2>Biography</h2>
