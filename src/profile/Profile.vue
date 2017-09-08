@@ -47,7 +47,25 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-2"><input type="text" v-model="skillName" placeholder="Skill Name"></div>	
-						<div class="col-md-2"><input type="text" v-model="skillImage" placeholder="Skill Img URL"></div>
+						<div class="col-md-3">
+							<dropzone id="myVueDropzone" 
+							:url="config.url +'/api/user/skills'" 
+							v-on:vdropzone-success="workAddSuccess"
+							:dropzoneOptions="{
+								'headers': {'x-access-token': token},
+							}"
+							:autoProcessQueue="false"
+							:useFontAwesome="true"
+							:maxFileSizeInMB="5"
+							:resizeWidth="100"
+							:resizeHeight="100"
+							ref="dropzone2">
+								<input type="hidden" name="name" v-model="skillName">
+								<input type="hidden" name="category" v-model="skillCat">
+								<input type="hidden" name="user_id" v-model="userId">
+								<input type="hidden" name="description" v-model="skillPercentage">
+							</dropzone>
+						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<select class="form-control" id="sel" v-model="skillCat">
@@ -56,8 +74,10 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-3"><input type="number" v-model.number="skillPercentage" min="1" max="100" placeholder="Skill Percentage"></div>
+						<div class="col-md-2"><input type="number" v-model.number="skillPercentage" min="1" max="100" placeholder="Skill Percent"></div>
 						<button class="btn btn-primary" @click="addSkill">Add Skill</button>
+						<br>
+						<br>
 						<ul class="list-group col-md-6 col-md-offset-3" id="skillList">
 							<li v-for="(skill, index) in skills" class="list-group-item" :data-balloon="skill.category + ' - ' +skill.percent+ '%'" data-balloon-pos="left"><img class="list-img" :src="skill.image_url"><h3 class="skill-title">{{skill.name}}</h3><i class="fa fa-trash fa-lg" @click="deleteSkill(skill._id, index)"></i><i class="fa fa-pencil-square-o fa-lg" @click="editModalSkill(skill)"></i></li>
 						</ul>
@@ -77,13 +97,15 @@
                             <label for="defaultForm-name">Work Name</label>
                         </div>
 
-                        <dropzone id="myVueDropzone" 
+                        <dropzone id="myVueDropzone2" 
                         :url="config.url +'/api/user/portfolio'" 
-                        v-on:vdropzone-success="workAddSuccess"
+                        v-on:vdropzone-success="skillAddSuccess"
                         :dropzoneOptions="{
                             'headers': {'x-access-token': token},
                         }"
 						:autoProcessQueue="false"
+						:useFontAwesome="true"
+						:maxFileSizeInMB="5"
 						ref="dropzone">
                             <input type="hidden" name="name" v-model="workName">
                             <input type="hidden" name="link" v-model="workLink">
@@ -246,22 +268,7 @@
 				  this.$router.push('/login');
 			  },
 			  addSkill(){
-				  var reqBody = {
-					  name: this.skillName,
-					  percent: this.skillPercentage,
-					  image_url: this.skillImage,
-					  user_id: localStorage.getItem('id'),
-					  category: this.skillCat,
-					  };
-				  var id = localStorage.getItem('id');
-				  api.post('user/skills', reqBody)
-				  	.then((res) => {
-						  this.skills.push(res.data);
-						  this.skillName = '';
-						  this.skillImage = '';
-						  this.skillCat = '';
-						  this.skillPercentage = '';
-					  });
+				this.$refs.dropzone2.processQueue();
 			  },
 			  deleteSkill(id, index){
 				  this.skills.splice(index, 1);
@@ -289,20 +296,10 @@
 					  })
 			  },
 			  addWork(){
-				  var reqBody = {
-					  name: this.workName,
-					  user_id: localStorage.getItem('id'),
-					  category: this.workCat,
-					  link: this.workLink,
-					  description: this.workDescription,
-					  };
 				  this.$refs.dropzone.processQueue();
 				  api.post('user/portfolio', reqBody)
 				  		.then(res => {
-							this.workName = '';
-							this.workCat = '';
-							this.workLink = '';
-							this.workDescription = '';
+							
 							this.portfolio.push(res.data);
 					  	})
 			  },
@@ -344,7 +341,19 @@
 			  closeExp(){
 				  this.expCon = false;
 			  },
-			  workAddSuccess(file, res){console.log(res);}
+			  skillAddSuccess(file, res){
+				  this.skillName = '';
+				  this.skillCat = '';
+				  this.skillPercentage = '';
+				  this.skills.push(res);
+			  },
+			  workAddSuccess(file, res){
+				  this.workName = '';
+				  this.workCat = '';
+				  this.workLink = '';
+				  this.workDescription = '';
+				  this.portfolio.push(res);
+			  }
 		  }
 	}
 </script>
