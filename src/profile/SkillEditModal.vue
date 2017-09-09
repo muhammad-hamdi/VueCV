@@ -6,20 +6,15 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading"><h3>Edit Skill</h3><div style="float: right; font-size: 26px; cursor: pointer" @click="close">&times;</div></div>
                             <div class="panel-body">
-							<label for="defaultForm-name">Skill Name</label>
+
+							    <label for="defaultForm-name">Skill Name</label>                                                                    
                                 <div class="md-form">
                                     <input type="text"
 									id="defaultForm-name" 
 									v-model="skillEdit.name" 
 									class="form-control">
                                 </div>
-								<label for="defaultForm-image">Skill Img URL</label>
-								<div class="md-form">
-                                    <input type="text" 
-									id="defaultForm-image" 
-									v-model="skillEdit.image_url" 
-									class="form-control">
-                                </div>
+								
 								<label for="defaultForm-percent">Skill Percentage</label>								
 								<div class="md-form">
                                     <input type="text" 
@@ -36,6 +31,14 @@
 										<option v-for="cat in categories">{{cat}}</option>
 									</select>
 								</div>
+
+                                 <div class="md-form col-md-6 col-md-offset-3 col-xs-12">
+                                    <img :src="skillEdit.image_url"
+                                         :title="skillEdit.name"
+                                         :alt="skillEdit.name"
+                                         class="img-responsive img-thumbnail">
+                                </div>
+
                                 <div class="text-right">
                                     <button :class="{'btn':true, 'btn-primary': true, 'disabled': control}" :disabled="control" @click.prevent="editSkill(skillEdit._id)">Edit</button>
                                     </div>
@@ -80,7 +83,8 @@
         position: fixed;
         z-index: 10000;
         background: rgba(0,0,0,.5);
-		transform: translateX(-20px)
+		transform: translateX(-20px);
+        overflow: scroll;
     }
 	.modal-wrapper h3, .modal-wrapper h2 {
 		display: inline-block;

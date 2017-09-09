@@ -13,18 +13,11 @@
 									v-model="workEdit.name" 
 									class="form-control">
                                 </div>
-                                <div class="md-form col-md-6">
+                                <div class="md-form">
                                     <input type="text" 
 									placeholder="Work Link"
 									id="defaultForm-name" 
 									v-model="workEdit.link" 
-									class="form-control">
-                                </div>
-								<div class="md-form col-md-6">
-                                    <input type="text"
-									placeholder="Work Img URL"
-									id="defaultForm-image" 
-									v-model="workEdit.image_url" 
 									class="form-control">
                                 </div>
 
@@ -41,7 +34,10 @@
                                     <textarea id="defaultForm-desc" class="md-textarea" v-model="workEdit.description"></textarea>
                                 </div>
 
-								
+								<div class="col-xs-12">
+                                    <img :src="workEdit.image_url" class="img-responsive img-thumbnail">
+                                </div>
+
                                 <div class="text-right">
                                     <button :class="{'btn':true, 'btn-primary': true, 'disabled': control}" :disabled="control" @click.prevent="editWork(workEdit._id)">Edit</button>
                                     </div>
@@ -81,5 +77,5 @@
 </script>
 
 <style>
-    
+
 </style>

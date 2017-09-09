@@ -50,20 +50,20 @@
 						<div class="col-md-3">
 							<dropzone id="myVueDropzone" 
 							:url="config.url +'/api/user/skills'" 
-							v-on:vdropzone-success="workAddSuccess"
+							v-on:vdropzone-success="skillAddSuccess"
 							:dropzoneOptions="{
 								'headers': {'x-access-token': token},
 							}"
 							:autoProcessQueue="false"
 							:useFontAwesome="true"
 							:maxFileSizeInMB="5"
-							:resizeWidth="100"
-							:resizeHeight="100"
+							:thumbnail-width="120"
+							:thumbnail-height="120"
 							ref="dropzone2">
 								<input type="hidden" name="name" v-model="skillName">
 								<input type="hidden" name="category" v-model="skillCat">
 								<input type="hidden" name="user_id" v-model="userId">
-								<input type="hidden" name="description" v-model="skillPercentage">
+								<input type="hidden" name="percent" v-model="skillPercentage">
 							</dropzone>
 						</div>
 						<div class="col-md-3">
@@ -181,6 +181,48 @@
 			</div>
 		</div>
 		</div>
+
+<!--  -->
+			<div class="row" id="exp" v-if="user && user.username">
+		<div class="col-md-8 col-xs-12 col-md-offset-2">
+			<div class="panel panel-primary">
+				<div class="panel-heading text-center"><h3>Goals</h3></div>
+				<div class="panel-body">
+						<div class="md-form">
+							<input type="text" id="name" v-model="goalName" class="form-control">
+							<label for="name">Goal</label>
+						</div>
+						<div class="md-form">
+							<input type="text" id="role" v-model="goalPercent" class="form-control">
+							<label for="role">Completion Rate</label>
+						</div>
+						<div class="md-form text-right">
+							<button class="btn btn-primary" @click="addGoal">Add Goal</button>
+						</div>
+							<div class="col-md-12" id="expList">
+								<div class="row">
+									<div class="col-md-6" v-for="goal in goals">
+										<div class="goal-card">
+										<p>{{goal.name}}</p>
+										<div class="bar">
+											<div class="progress">
+												<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" :style="{'width': goal.rate + '%'}">
+													{{goal.rate}}%
+												</div>
+											</div>
+										</div>
+										<div class="options">
+												<i class="fa fa-trash fa-lg"></i>
+												<i class="fa fa-pencil-square-o fa-lg"></i>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div>
+				</div>
+			</div>
+		</div>
+		</div>
 	</div>
 </template>
 
@@ -199,6 +241,7 @@
 				skills: [],
 				portfolio: [],
 				workExp: [],
+				goals: [],
 				skillName: '',
 				skillImage: '',
 				skillCat: '',
@@ -225,10 +268,12 @@
 				expRole: '',
 				expCon: false,
 				expEdit: '',
+				goalName: '',
+				goalPercent: '',
 				welcomeEnd: false,
 				token: localStorage.token,
 				config: config,
-				userId: localStorage.id
+				userId: localStorage.id,
 			}
 		},
 		created(){
@@ -254,8 +299,11 @@
 			api.get('user/'+ id +'/exp')
 				.then(res => {
 					this.workExp = res.data;
+				});
+			api.get('user/'+ id +'/goal')
+				.then(res => {
+					this.goals = res.data;
 				})
-			var self = this;
 			setTimeout(() => {this.welcomeEnd = true}, 2500);
 		  },
 		  components: {
@@ -297,11 +345,6 @@
 			  },
 			  addWork(){
 				  this.$refs.dropzone.processQueue();
-				  api.post('user/portfolio', reqBody)
-				  		.then(res => {
-							
-							this.portfolio.push(res.data);
-					  	})
 			  },
 			  deleteWork(id, index){
 				  this.portfolio.splice(index, 1);
@@ -338,6 +381,20 @@
 				  this.expCon = true;
 				  this.expEdit = exp;
 			  },
+			  addGoal(){
+				  let reqBody = {
+					  name: this.goalName,
+					  rate: this.goalPercent,
+					  user_id: this.userId
+				  };
+
+				  api.post('user/goal', reqBody)
+				  	.then(res => {
+						  this.goalName = '';
+						  this.goalPercent = '';
+						  this.goals.push(res.data);
+					  })
+			  },
 			  closeExp(){
 				  this.expCon = false;
 			  },
@@ -345,6 +402,7 @@
 				  this.skillName = '';
 				  this.skillCat = '';
 				  this.skillPercentage = '';
+				  this.$refs.dropzone2.removeAllFiles();
 				  this.skills.push(res);
 			  },
 			  workAddSuccess(file, res){
@@ -352,6 +410,7 @@
 				  this.workCat = '';
 				  this.workLink = '';
 				  this.workDescription = '';
+				  this.$refs.dropzone.removeAllFiles();				  
 				  this.portfolio.push(res);
 			  }
 		  }
@@ -489,17 +548,16 @@
 		border-radius: 3px;
 		box-shadow: 0px 2px 8px 0px rgba(0,0,0,.2);
 	}
-	.workExp .options {
+	.options {
 		position: absolute;
-		top: 10px;
-		right: -5px;
+		top: 15px;
+		right: 25px;
 	}
-	.workExp .fa {transition: all .2s ease-in-out;}
-	.workExp .fa:hover {
+	.fa {transition: all .2s ease-in-out;}
+	.fa:hover {
 		color: #5A95F5;
 		cursor: pointer;
 	}
-	.workExp i:last-of-type {margin-right: 20px}
 	.workExp h3 {
 		margin-top: 0;
 		padding-top: 0;
@@ -522,5 +580,13 @@
 	.fade-leave-active {
 		transition: opacity 1s;
 		opacity: 0;
+	}
+	.goal-card {
+		min-height: 100px;
+		margin: 5px;
+		background-color: #FFF;
+		border: 1px solid #ddd;
+		box-shadow: 0px 2px 8px 0px rgba(0,0,0,.2);
+		padding: 20px
 	}
 </style>
