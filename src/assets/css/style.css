@@ -304,3 +304,17 @@ body {
 .split-small {
     margin: 50px 0;
 }
+.goal-card {
+    min-height: 100px;
+    margin: 5px;
+    background-color: #FFF;
+    border: 1px solid #ddd;
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,.2);
+    padding: 20px;
+    transition: all .2s ease-in;
+}
+.goal-card:hover {
+    box-shadow: 0px 3px 8px 0px rgba(0,0,0,.2);
+    transform: translateY(-2px);
+    cursor: pointer;
+}

@@ -60,10 +60,9 @@
                         <dropzone id="myVueDropzone" 
                         :url="config.url +'/api/uploads/'+ userId" 
                         v-on:vdropzone-success="showSuccess"
-                        :dropzoneOptions="{
-                            'headers': {'x-access-token': token},
-                            'autoProcessQueue': false
-                        }">
+                        :dropzoneOptions="{'headers': {'x-access-token': token}}"
+                        :autoProcessQueue="false"
+                        ref="picZone">
                             <input type="hidden" name="token" value="xxx">
                         </dropzone>
                         <hr>
@@ -140,6 +139,7 @@
                     this.wrongPwd = true;
                     this.control = false;
                 } else {
+                    this.$refs.picZone.processQueue();
                     api.patch(`user/${this.user._id}`,reqBody)
                         .then((res) => {
                             this.$router.push('/profile');

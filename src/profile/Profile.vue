@@ -13,6 +13,9 @@
 		<ExpEditModal 	:expCon="expCon"
 						:expEdit="expEdit"
 						@close="closeExp"></ExpEditModal>
+		<GoalEditModal  :goalCon="goalCon"
+						:goalEdit="goalEdit"
+						@close="closeGoal"></GoalEditModal>
 		<div class="row">
 			<div class="col-sm-12">
 				<nav-bar></nav-bar>
@@ -21,7 +24,7 @@
 		<div class="row" id="profile" v-if="user && user.username">
 		<div class="col-md-8 col-sm-12 col-md-offset-2">
 			<div class="panel panel-primary">
-				<div class="panel-heading"><button class="btn btn-danger logout" @click="logOut">Log Out</button>
+				<div class="panel-heading"><!--<button class="btn btn-danger logout" @click="logOut">Log Out</button>-->
 					<h3 v-if="!welcomeEnd">Welcome Back!</h3>
 				<transition name="fade">
 					<h3 v-if="welcomeEnd">{{user.name}}</h3>
@@ -32,9 +35,9 @@
 					<h3>{{user.name}}</h3>
 					<h4 v-if="user.title">{{user.title}}</h4>
 					<p v-if="user.description">{{user.description}}</p>
-					<router-link :to="{path: `/profile/edit/${user._id}`}">
+					<!-- <router-link :to="{path: `/profile/edit/${user._id}`}">
 						<button class="btn btn-primary">edit profile</button>
-					</router-link>
+					</router-link> -->
 					</div>
 			</div>
 		</div>
@@ -99,7 +102,7 @@
 
                         <dropzone id="myVueDropzone2" 
                         :url="config.url +'/api/user/portfolio'" 
-                        v-on:vdropzone-success="skillAddSuccess"
+                        v-on:vdropzone-success="workAddSuccess"
                         :dropzoneOptions="{
                             'headers': {'x-access-token': token},
                         }"
@@ -183,7 +186,7 @@
 		</div>
 
 <!--  -->
-			<div class="row" id="exp" v-if="user && user.username">
+			<div class="row" id="goal" v-if="user && user.username">
 		<div class="col-md-8 col-xs-12 col-md-offset-2">
 			<div class="panel panel-primary">
 				<div class="panel-heading text-center"><h3>Goals</h3></div>
@@ -201,7 +204,7 @@
 						</div>
 							<div class="col-md-12" id="expList">
 								<div class="row">
-									<div class="col-md-6" v-for="goal in goals">
+									<div class="col-md-6" v-for="(goal, index) in goals">
 										<div class="goal-card">
 										<p>{{goal.name}}</p>
 										<div class="bar">
@@ -212,8 +215,8 @@
 											</div>
 										</div>
 										<div class="options">
-												<i class="fa fa-trash fa-lg"></i>
-												<i class="fa fa-pencil-square-o fa-lg"></i>
+												<i class="fa fa-trash fa-lg" @click="deleteGoal(goal._id, index)"></i>
+												<i class="fa fa-pencil-square-o fa-lg" @click="editGoalModal(goal)"></i>
 										</div>
 									</div>
 									</div>
@@ -231,6 +234,7 @@
 	import SkillEditModal from './SkillEditModal.vue'
 	import WorkEditModal from './WorkEditModal.vue'
 	import ExpEditModal from './ExpEditModal.vue'
+	import GoalEditModal from './GoalEditModal.vue'
     import {api} from '../config/axios'
     import config from '../config/config'
 	import Dropzone from 'vue2-dropzone'
@@ -270,6 +274,8 @@
 				expEdit: '',
 				goalName: '',
 				goalPercent: '',
+				goalEdit: '',
+				goalCon: false,
 				welcomeEnd: false,
 				token: localStorage.token,
 				config: config,
@@ -307,7 +313,7 @@
 			setTimeout(() => {this.welcomeEnd = true}, 2500);
 		  },
 		  components: {
-			NavBar, SkillEditModal, WorkEditModal, ExpEditModal, Dropzone
+			NavBar, SkillEditModal, WorkEditModal, ExpEditModal, GoalEditModal, Dropzone
 		  },
 		  methods: {
 			  logOut(){
@@ -319,10 +325,9 @@
 				this.$refs.dropzone2.processQueue();
 			  },
 			  deleteSkill(id, index){
-				  this.skills.splice(index, 1);
-				  console.log(id);
 				  api.delete('user/skills/'+ id)
-				  	.then((res) => {})
+					.then((res) => {this.skills.splice(index, 1);})
+					  .catch(err => {if(err) window.alert(err)})
 			  },
 			  editModalSkill(skill){
 				  this.edit = true;
@@ -347,9 +352,9 @@
 				  this.$refs.dropzone.processQueue();
 			  },
 			  deleteWork(id, index){
-				  this.portfolio.splice(index, 1);
 				  api.delete('user/portfolio/'+ id)
-				  	.then((res) => {})
+				  	.then((res) => {this.portfolio.splice(index, 1)})
+					  .catch(err => {if(err) window.alert(err)})
 			  },
 			  editModalWork(work){
 				  this.editWorkCon = true;
@@ -375,11 +380,15 @@
 			  },
 			  deleteExp(id, index){
 				  api.delete('user/exp/'+id)
-				  	.then(res => { this.workExp.splice(index, 1)});
+					.then(res => { this.workExp.splice(index, 1)})
+					  .catch(err => {if(err) window.alert(err)})
 			  },
 			  editModalExp(exp){
 				  this.expCon = true;
 				  this.expEdit = exp;
+			  },
+			  closeExp(){
+				  this.expCon = false;
 			  },
 			  addGoal(){
 				  let reqBody = {
@@ -395,8 +404,17 @@
 						  this.goals.push(res.data);
 					  })
 			  },
-			  closeExp(){
-				  this.expCon = false;
+			  closeGoal(){
+				  this.goalCon = false;
+			  },
+			  editGoalModal(goal){
+				  this.goalCon = true;
+				  this.goalEdit = goal;
+			  },
+			  deleteGoal(id, index){
+				  api.delete('user/goal/'+ id)
+					.then(res => {this.goals.splice(index, 1)})
+					  .catch(err => {if(err) window.alert(err)})
 			  },
 			  skillAddSuccess(file, res){
 				  this.skillName = '';
@@ -404,6 +422,7 @@
 				  this.skillPercentage = '';
 				  this.$refs.dropzone2.removeAllFiles();
 				  this.skills.push(res);
+				  console.log(res);
 			  },
 			  workAddSuccess(file, res){
 				  this.workName = '';
@@ -553,7 +572,7 @@
 		top: 15px;
 		right: 25px;
 	}
-	.fa {transition: all .2s ease-in-out;}
+	.fa {transition: all .2s ease-in-out;margin-left: 5px;}
 	.fa:hover {
 		color: #5A95F5;
 		cursor: pointer;

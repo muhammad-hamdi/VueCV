@@ -73,88 +73,20 @@
           <div class="row" id="goals">
               <h2>Goals</h2>
               <div class="split-small"></div>
-              <div class="panel panel-default">
+              <div class="panel panel-primary">
                   <div class="panel-body">
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">CSS Framework Component pack :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                                      20%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Master Javascript Technologies :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
-                                      70%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Javascript MVC Framework :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">
-                                      5%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Arabic Developers Community site: &nbsp;</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
-                                      10%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Online Learning Academy :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                                      0%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Web Services Company :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 15%;">
-                                      15%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Becoming Full-stack Developer :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
-                                      65%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="goal">
-                              <h3 class="col-xs-12 col-md-4 g-title">Publish a Course on Udemy :</h3>
-                              <div class="progress  col-xs-12 col-md-8">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 12%;">
-                                      12%
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+                        <div class="col-md-4" v-for="(goal, index) in data.goals">
+										<div class="goal-card">
+										<p>{{goal.name}}</p>
+										<div class="bar">
+											<div class="progress">
+												<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" :style="{'width': goal.rate + '%'}">
+													{{goal.rate}}%
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
                   </div>
               </div>
           </div>
@@ -197,21 +129,6 @@
 
                             </form>
                             <!-- Contact form -->
-                      </div>
-                  </div>
-              </div>
-              <div class="container text-center">
-                  <div class="row">
-                      <div class="col-xs-12">
-                        <h3>Contact Info :-</h3>
-                        <p>Phone: +20 102 4504 394</p>
-                        <p>E-mail: prime.energy7@gmail.com</p>
-                        <p>Address: Royal Tower, Sidi Bishr, Alexandria</p>
-                        <ul id="social">
-                            <a href="https://www.fb.com/neutrino3"><li><i class="fa fa-facebook fa-2x"></i></li></a>
-                            <a href="https://codepen.io/neutricode/"><li><i class="fa fa-codepen fa-2x"></i></li></a>
-                            <a href="https://github.com/MuhammadHamdi1"><li><i class="fa fa-github fa-2x"></i></li></a>
-                        </ul>
                       </div>
                   </div>
               </div>
@@ -286,5 +203,8 @@ ul li i {
 }
 #skills {
     transform: translateY(120px);
+}
+body {
+    background-color: #00f;
 }
 </style>
