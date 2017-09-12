@@ -6,8 +6,9 @@ h1 {
     margin-bottom: 10px;
     font-size: 50px;
 }
-img.personal {
-    max-height: 200px;
+.personal {
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     border: 1px solid #ebb;
     padding: 3px;
